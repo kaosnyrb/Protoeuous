@@ -19,6 +19,7 @@ namespace Protoeuous
             InitializeComponent();
         }
         public static string Protofilepath = "";
+        public static string SafeFileName = "";
 
         private void ProtoLoadButton_Click(object sender, EventArgs e)
         {
@@ -28,11 +29,12 @@ namespace Protoeuous
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
             Protofilepath = openFileDialog1.FileName;
+            SafeFileName = openFileDialog1.SafeFileName;
             FileStream stream = new FileStream(Protofilepath,FileMode.Open);
             StreamReader reader = new StreamReader(stream);
             var text = reader.ReadToEnd();
             richTextBox1.Text = text;
-            File.Copy(Protofilepath, "build.proto", true);
+            File.Copy(Protofilepath, SafeFileName, true);
         }
 
         private void BuildButton_Click(object sender, EventArgs e)
@@ -44,9 +46,9 @@ namespace Protoeuous
             }
             
             string strCmdText;
-            strCmdText = "/C protoc.exe --csharp_out Output build.proto --grpc_out Output --plugin=protoc-gen-grpc=grpc_csharp_plugin.exe";
+            strCmdText = "/C protoc.exe --csharp_out Output " + SafeFileName + " --grpc_out Output --plugin=protoc-gen-grpc=grpc_csharp_plugin.exe";
             Process.Start("CMD.exe", strCmdText);
-            strCmdText = "/C protoc.exe --csharp_out Output build.proto --grpc_out Output --plugin=protoc-gen-grpc=protoc-gen-go.exe";
+            strCmdText = "/C protoc.exe --csharp_out Output " + SafeFileName + " --grpc_out Output --plugin=protoc-gen-grpc=protoc-gen-go.exe";
             Process.Start("CMD.exe", strCmdText);
             Process.Start(Directory.GetCurrentDirectory() + "/Output/");
         }
