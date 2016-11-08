@@ -48,7 +48,7 @@ namespace Protoeuous
             string strCmdText;
             strCmdText = "/C protoc.exe --csharp_out Output " + SafeFileName + " --grpc_out Output --plugin=protoc-gen-grpc=grpc_csharp_plugin.exe";
             Process.Start("CMD.exe", strCmdText);
-            strCmdText = "/C protoc.exe --csharp_out Output " + SafeFileName + " --grpc_out Output --plugin=protoc-gen-grpc=protoc-gen-go.exe";
+            strCmdText = "/C protoc.exe --go_out=plugins=grpc:Output " + SafeFileName;
             Process.Start("CMD.exe", strCmdText);
             Process.Start(Directory.GetCurrentDirectory() + "/Output/");
         }
